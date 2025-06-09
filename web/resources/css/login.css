@@ -1,0 +1,30 @@
+.btn-primary{
+    background-color: #5ead61 !important;
+    border-color: #5ead61 !important;
+}
+.link-primary{
+    color: #5ead61 !important;
+}
+.link-primary:hover{
+    color: #5ead61 !important;
+}
+.form-check-input{
+    background-color: #5ead61 !important;
+    border-color: #5ead61 !important;
+}
+
+.toggle-password {
+    border: none;
+    background: transparent;
+    outline: none;
+}
+.toggle-password:hover{
+    border: none;
+    background: transparent;
+    outline: none;
+}
+.toggle-password:active{
+    border: none;
+    background: transparent;
+    outline: none;
+}
