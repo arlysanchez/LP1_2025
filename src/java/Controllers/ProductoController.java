@@ -16,6 +16,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -32,16 +34,15 @@ public class ProductoController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-         if (action == null) {
+        if (action == null) {
             // Handle the case where action is null. Default to listing products.
             listarProductos(request, response);
             return;
-          }
-        
+        }
 
         switch (action) {
             case "guardar":
-
+                guardarProducto(request, response);
                 break;
             case "editar":
 
@@ -58,15 +59,51 @@ public class ProductoController extends HttpServlet {
         }
 
     }
-    
-    private void listarProductos(HttpServletRequest request, HttpServletResponse response) throws IOException{
+
+    private void listarProductos(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Producto> productos = productoDao.lista();
         String json = new Gson().toJson(productos);
-        System.out.println("json"+json);
-        try(PrintWriter out = response.getWriter()){
+        System.out.println("json" + json);
+        try (PrintWriter out = response.getWriter()) {
             out.print(json);
         }
-        
+
+    }
+
+    private void guardarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        String precio = request.getParameter("precio");
+        double precioDouble = Double.parseDouble(precio);
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        Part part = request.getPart("imagen");
+        InputStream inputStream = part.getInputStream();
+
+        Producto producto = new Producto();
+        producto.setNombre(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precioDouble);
+        producto.setStock(stock);
+        producto.setImagen(inputStream);
+
+        boolean resultado = false; // Inicializar con un valor por defecto
+
+        try {
+            resultado = productoDao.insert(producto);
+            if (resultado) {
+                System.out.println("Done");
+            } else {
+                System.out.println("Failed");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al insertar el producto: " + e.getMessage());
+            e.printStackTrace();
+            resultado = false; // Asegurar que resultado sea false en caso de excepción
+        }
+
+        try (PrintWriter out = response.getWriter()) {
+            out.print(new Gson().toJson(resultado));
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

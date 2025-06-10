@@ -8,6 +8,10 @@ import Interface.IProducto;
 import Model.Producto;
 import Util.ConexionSingleton;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,11 +34,11 @@ public class ProductoDaoImpl implements IProducto {
         try {
             query = "SELECT id_producto,nombre,descripcion,precio,stock FROM productos;";
             lista = new ArrayList<>();
-             if (cn == null || cn.isClosed()) {
+            if (cn == null || cn.isClosed()) {
                 System.out.println("La conexión es nula o está cerrada");
             }
             cn = ConexionSingleton.getConnection();
-           
+
             st = cn.prepareStatement(query);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -212,7 +216,57 @@ public class ProductoDaoImpl implements IProducto {
 
     @Override
     public void listImg(int id, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        System.out.println("llega al Dao" + id);
+        Producto pr = null;
+        PreparedStatement st;
+        ResultSet rs;
+        String query = null;
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+
+        try {
+            query = "SELECT imagen FROM productos WHERE id_producto = ?";
+            cn = ConexionSingleton.getConnection();
+            st = cn.prepareStatement(query);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            System.out.println("rs:"+ rs);
+            if (rs.next()) {
+                System.out.println("entro aqui");
+                inputStream = rs.getBinaryStream("imagen");
+                System.out.println("inputStream"+ inputStream);
+            }
+
+            if (inputStream != null) {
+                System.out.println("entra al");
+                response.setContentType("image/*"); // Ajuste el tipo de contenido según sea necesario
+                outputStream = response.getOutputStream();
+                bufferedInputStream = new BufferedInputStream(inputStream);
+                bufferedOutputStream = new BufferedOutputStream(outputStream);
+                int i;
+                while ((i = bufferedInputStream.read()) != -1) {
+                    bufferedOutputStream.write(i);
+                }
+            }
+
+           
+        } catch (Exception e) {
+            System.out.println("Error buscar imagen por Id: " + e.getMessage());
+            try {
+                cn.rollback();
+            } catch (Exception ex) {
+            }
+            System.out.println("Erro. No se pudo buscar imagen por Id");
+        } finally {
+            if (cn != null) {
+                try {
+                } catch (Exception ex) {
+                }
+            }
+        }
     }
 
 }
