@@ -7,8 +7,13 @@ $(document).ready(function () {
     });
     $("#productosTabla").on("click", ".btn-eliminar", function () {
         const id_producto = $(this).data("id_producto");
-        console.log("id_producto", id_producto);
+       // console.log("id_producto", id_producto);
         eliminarProducto(id_producto);
+    });
+     $("#productosTabla").on("click", ".btn-editar", function () {
+        const id_producto = $(this).data("id_producto");
+       // console.log("id_producto_para_editar", id_producto);
+        cargarProductoParaEditar(id_producto);
     });
 
 });
@@ -138,6 +143,39 @@ function eliminarProducto(id_producto) {
                         icon: "error"
                     });
                 }
+            });
+        }
+    });
+}
+
+function cargarProductoParaEditar(id_producto) {
+    $.ajax({
+        url: config.baseUrl + "/ProductoController?action=buscar&id="+id_producto,
+        type: "GET",
+        dataType: "json",
+        success: function (producto) {
+            if (producto) {
+                // Llena el formulario con los datos del producto
+                $("#id_producto").val(producto.id_producto);
+                $("#nombre").val(producto.nombre);
+                $("#descripcion").val(producto.descripcion);
+                $("#precio").val(producto.precio);
+                $("#stock").val(producto.stock);
+
+            } else {
+                Swal.fire({
+                    title: "¡Error!",
+                    text: "No se encontró el producto.",
+                    icon: "error"
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error al obtener el producto:", error);
+            Swal.fire({
+                title: "¡Error!",
+                text: "Error al obtener el producto.",
+                icon: "error"
             });
         }
     });

@@ -45,13 +45,14 @@ public class ProductoController extends HttpServlet {
                 guardarProducto(request, response);
                 break;
             case "editar":
-
+             editarProducto(request, response);
                 break;
             case "eliminar":
+                eliminarProducto(request, response);
 
                 break;
             case "buscar":
-
+              BuscarProducto(request,response);
                 break;
             default:
                 listarProductos(request, response);
@@ -105,6 +106,121 @@ public class ProductoController extends HttpServlet {
             out.print(new Gson().toJson(resultado));
         }
     }
+    private void eliminarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            String id_producto = request.getParameter("id"); // Change this line
+             System.out.println("id_prod_serve: " + id_producto);
+        if (id_producto != null && !id_producto.isEmpty()) {
+            try {
+                int id = Integer.parseInt(id_producto);
+                boolean resultado = productoDao.delete(id); // Asume que tienes un método delete en tu DAO
+                if (resultado) {
+                    System.out.println("Producto eliminado con ID: " + id);
+                } else {
+                    System.out.println("Error al eliminar el producto con ID: " + id);
+                }
+                try (PrintWriter out = response.getWriter()) {
+                    out.print(new Gson().toJson(resultado));
+                }
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                 try (PrintWriter out = response.getWriter()) {
+                    out.print("ID de producto inválido");
+                }
+                System.err.println("Error al convertir el ID del producto: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            try (PrintWriter out = response.getWriter()) {
+                    out.print("Falta el ID del producto");
+                }
+            System.out.println("Falta el parámetro ID para eliminar el producto");
+        }
+    }
+     private void BuscarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id_producto = request.getParameter("id");
+        if (id_producto != null && !id_producto.isEmpty()) {
+            try {
+                int id = Integer.parseInt(id_producto);
+                Producto producto = productoDao.SearchById(id); // Asume que tienes un metodo get
+                if (producto != null) {
+                    try (PrintWriter out = response.getWriter()) {
+                        out.print(new Gson().toJson(producto));
+                    }
+                } else {
+                    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.print("Producto no encontrado");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                try (PrintWriter out = response.getWriter()) {
+                    out.print("ID de producto inválido");
+                }
+                System.err.println("Error al convertir el ID del producto: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            try (PrintWriter out = response.getWriter()) {
+                out.print("Falta el ID del producto");
+            }
+            System.out.println("Falta el parámetro ID para obtener el producto");
+        }
+    }
+     
+      private void editarProducto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id_producto = request.getParameter("id_producto");  
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        String precio = request.getParameter("precio");
+        double precioDouble = Double.parseDouble(precio);
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        Part part = request.getPart("imagen");
+        InputStream inputStream = part.getInputStream();
+
+
+            if (id_producto != null && !id_producto.isEmpty()) {
+            try {
+                int id = Integer.parseInt(id_producto);
+
+                Producto producto = new Producto();
+                producto.setId_producto(id); 
+                producto.setNombre(nombre);
+                producto.setDescripcion(descripcion);
+                producto.setPrecio(precioDouble);
+                producto.setStock(stock);
+                producto.setImagen(inputStream);
+                boolean resultado = productoDao.update(producto);
+                if (resultado) {
+                    System.out.println("Producto actualizado con éxito");
+                } else {
+                    System.out.println("Error al actualizar el producto");
+                }
+
+                try (PrintWriter out = response.getWriter()) {
+                    out.print(new Gson().toJson(resultado));
+                }
+
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                try (PrintWriter out = response.getWriter()) {
+                    out.print("ID de producto inválido");
+                }
+                System.err.println("Error al convertir el ID del producto: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+          } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            try (PrintWriter out = response.getWriter()) {
+                out.print("Falta el ID del producto");
+            }
+            System.out.println("Falta el parámetro ID para actualizar el producto");
+        }
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

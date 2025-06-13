@@ -51,7 +51,7 @@ public class ImagenController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       // processRequest(request, response);
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println("llega id"+id);
         DaoProducto.listImg(id, response);

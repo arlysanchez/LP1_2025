@@ -217,7 +217,6 @@ public class ProductoDaoImpl implements IProducto {
     @Override
     public void listImg(int id, HttpServletResponse response) {
 
-        System.out.println("llega al Dao" + id);
         Producto pr = null;
         PreparedStatement st;
         ResultSet rs;
@@ -226,6 +225,7 @@ public class ProductoDaoImpl implements IProducto {
         OutputStream outputStream = null;
         BufferedInputStream bufferedInputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
+        
 
         try {
             query = "SELECT imagen FROM productos WHERE id_producto = ?";
@@ -233,15 +233,11 @@ public class ProductoDaoImpl implements IProducto {
             st = cn.prepareStatement(query);
             st.setInt(1, id);
             rs = st.executeQuery();
-            System.out.println("rs:"+ rs);
             if (rs.next()) {
-                System.out.println("entro aqui");
                 inputStream = rs.getBinaryStream("imagen");
-                System.out.println("inputStream"+ inputStream);
             }
 
             if (inputStream != null) {
-                System.out.println("entra al");
                 response.setContentType("image/*"); // Ajuste el tipo de contenido según sea necesario
                 outputStream = response.getOutputStream();
                 bufferedInputStream = new BufferedInputStream(inputStream);
@@ -251,15 +247,13 @@ public class ProductoDaoImpl implements IProducto {
                     bufferedOutputStream.write(i);
                 }
             }
-
-           
         } catch (Exception e) {
-            System.out.println("Error buscar imagen por Id: " + e.getMessage());
+            System.out.println("Error buscar al producto ID: " + e.getMessage());
             try {
                 cn.rollback();
             } catch (Exception ex) {
             }
-            System.out.println("Erro. No se pudo buscar imagen por Id");
+            System.out.println("Erro. No se pudo buscar produto por ID");
         } finally {
             if (cn != null) {
                 try {
