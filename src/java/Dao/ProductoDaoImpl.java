@@ -211,7 +211,34 @@ public class ProductoDaoImpl implements IProducto {
 
     @Override
     public boolean updateStock(int id, int stock) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+          boolean flag = false;
+        PreparedStatement st;
+        String query = null;
+
+        try {
+            query = "UPDATE productos SET stock = ? WHERE id_producto = ?";
+            cn = ConexionSingleton.getConnection();
+            st = cn.prepareStatement(query);
+            st.setInt(1, stock);
+            st.setInt(2, id);
+            st.executeUpdate();
+            flag = true;
+        } catch (Exception e) {
+            System.out.println("Error Actualizar stock del Product: " + e.getMessage());
+            try {
+                cn.rollback();
+            } catch (Exception ex) {
+            }
+            flag = false;
+            System.out.println("Erro. No se pudo Actualizar");
+        } finally {
+            if (cn != null) {
+                try {
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return flag;
     }
 
     @Override

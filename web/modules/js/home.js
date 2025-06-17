@@ -7,17 +7,23 @@
 $(document).ready(function () {
     //traer una lista
     cargarProductos();
+
+    $(document).on("click", ".btn-addCar", function () {
+        let id_producto = $(this).data("id_producto");
+      //  console.log("id_producto",id_producto);
+        AddCarrito(id_producto);
+    });
 });
 
 function cargarProductos() {
     let contenedor = $("#productosContainer");
-    
+
     $.ajax({
         url: config.baseUrl + "/ProductoController",
         type: "GET",
         dataType: "json",
         success: function (productos) {
-            contenedor.empty(); 
+            contenedor.empty();
 
             if (productos.length === 0) {
                 contenedor.append('<p class="text-center">No hay productos disponibles.</p>');
@@ -46,6 +52,34 @@ function cargarProductos() {
         error: function (xhr, status, error) {
             console.error("Error al obtener productos:", error);
             contenedor.append('<p class="text-center text-danger">Error al cargar productos.</p>');
+        }
+    });
+}
+
+function AddCarrito(id_producto) {
+ //   console.log("id_producto",id_producto);
+    $.ajax({
+        url: config.baseUrl + "/AppController?action=AddCarrito&id="+id_producto,
+        type: "GET",
+        dataType: "json",
+         success: function (response) {
+                Swal.fire({
+                    title: "Success",
+                    text: "Producto añadido exitosamente.",
+                    icon: "success",
+                    timer: 2000, // Muestra el mensaje por 2 segundos
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "index.html";
+                });
+            },
+        error: function (xhr, status, error) {
+            console.error("Error al obtener el producto:", error);
+            Swal.fire({
+                title: "¡Error!",
+                text: "Error al obtener el producto.",
+                icon: "error"
+            });
         }
     });
 }
