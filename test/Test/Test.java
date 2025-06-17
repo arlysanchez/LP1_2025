@@ -21,8 +21,8 @@ public class Test {
     public static void main(String[] args) {
         
         Test t = new Test();
-         t.testConexion();
-      // t.listProductos();
+        // t.testConexion();
+       t.listProductos();
      // t.insert();
      //t.SearchById();
       // t.update();

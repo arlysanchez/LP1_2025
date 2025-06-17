@@ -16,7 +16,7 @@ public class ConexionSingleton {
             if (connection == null) {
                 Runtime.getRuntime().addShutdownHook(new getClose());
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://localhost/ecommerce_db", "root", "admin");
+                connection = DriverManager.getConnection("jdbc:mysql://localhost/bd_ecommerce_lp1", "root", "admin");
                 System.out.println("Entro al if");
             }
             return connection;
