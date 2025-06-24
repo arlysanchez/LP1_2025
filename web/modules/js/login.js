@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+
+
 $(document).ready(function () {
+   
+    
     $("#loginForm").submit(function (event) {
         event.preventDefault();
 
@@ -82,4 +86,6 @@ $(document).ready(function () {
             }
         });
     });
+    
+    
 });

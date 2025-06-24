@@ -7,10 +7,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="resources/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <script src="resources/js/iconos.js"></script>
-    <link rel="shortcut icon" href="resources/img/icono.ico" type="image/x-icon">
-    <link rel="stylesheet" href="resources/css/style.css">
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    
+
     <title>Ecommerce</title>
 </head>
 
@@ -18,8 +17,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                 <!--cambio de clase  <span class="navbar-toggler-icon"></span> a <i class="fa-solid fa-bars"></i> usando fontAwesome-->
                 <span><i class="fa-solid fa-bars"></i></span>
             </button>
@@ -27,14 +26,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="index.html"><img src="resources/img/icono.png"
-                                width="25px"></a>
+                                                                                              width="25px"></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Nosotros</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                           aria-expanded="false">
                             Gestion de ventas
                         </a>
                         <ul class="dropdown-menu">
@@ -47,24 +46,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     <a class="mx-2 color" href="carrito.html"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
                 <div class="mb-2">
-                     <a class="mx-2 color" href="login.html" id="loginBtn"> <i class="fa-solid fa-right-to-bracket"></i> </a>
+                    <a class="mx-2 color" href="login.html" id="loginBtn"> <i class="fa-solid fa-right-to-bracket"></i> </a>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" type="button" id="userDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         Perfil
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="login.html">Iniciar sesión</a></li>
-                        <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                        <li><a class="dropdown-item" id="cerrarSesion">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
-   
 
-     
+  <script src="resources/js/config.js"></script>
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/sweetalert2.js"></script> 
+    <script src="resources/js/iconos.js"></script>
+    <link rel="shortcut icon" href="resources/img/icono.ico" type="image/x-icon">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+    <script src="modules/js/cerrarSesion.js"></script>
+
 
 
 </body>
