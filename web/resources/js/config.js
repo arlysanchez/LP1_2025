@@ -5,5 +5,5 @@
 
 
 const config = {
-    baseUrl: "http://localhost:8081/ecommerce_LP1_2025"
+    baseUrl: "http://localhost:8080/ecommerce_LP1_2025"
 };
