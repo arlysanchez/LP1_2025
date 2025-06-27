@@ -47,8 +47,8 @@ function cargarCarrito() {
                     $("#btnGenerarCompra").removeClass("disabled");
                 }
 
-                $("#totalPagar").val(`S/.${totalPagar.toFixed(2)}`);
-                $("#totalPagarFinal").val(`S/.${totalPagar.toFixed(2)}`);
+                $("#totalPagar").val(`${totalPagar.toFixed(2)}`);
+                $("#totalPagarFinal").val(`${totalPagar.toFixed(2)}`);
             }
         },
         error: function (xhr, status, error) {
